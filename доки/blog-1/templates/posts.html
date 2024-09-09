@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<h1>Тут будут все посты</h1>
+
+{% for post in posts %}
+
+<h2>{{ post.title }}</h2>
+<p>{{ post.text }}</p>
+
+{% endfor %}
+
+</body>
+</html>

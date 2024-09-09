@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="main-content">
+        <h2>Список всех постов</h2>
+        {% for post in posts %}
+        <div class="post-card">
+            <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+            <p>{{ post.text }}</p>
+            <p class="date">{{ post.created_data }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <aside class="sidebar">
+        <h2>Категории</h2>
+        <ul>
+            {% for category in categories %}
+            {% if category.id == active_category.id %}
+            <b><li><a href="?category={{ category.id }}">{{category.title}}</a></li></b>
+            {% else %}
+            <li><a href="?category={{ category.id }}">{{category.title}}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </aside>
+</div>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог Платформа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .nav-menu li {
+            margin-left: 20px;
+        }
+        .nav-menu li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .nav-menu li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            display: flex;
+            margin: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        .main-content {
+            flex: 2;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .sidebar {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        h1, h2 {
+            margin: 0;
+            padding-bottom: 10px;
+        }
+        .post-card {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .post-card h3 {
+            margin: 0 0 10px;
+        }
+        .post-card p {
+            margin: 0 0 15px;
+        }
+        .post-card .date {
+            color: #888;
+            font-size: 0.9em;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 5px 0;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="header-logo">Блог Платформа</div>
+        <ul class="nav-menu">
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">О нас</a></li>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Контакты</a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="container">
+    <div class="main-content">
+        <h2>Список всех постов</h2>
+
+        <div class="post-card">
+            <h3><a href="#">Заголовок поста 1</a></h3>
+            <p>Краткое описание поста 1. Этот пост описывает важные моменты, которые касаются...</p>
+            <p class="date">Дата: 22 августа 2024</p>
+        </div>
+
+        <div class="post-card">
+            <h3><a href="#">Заголовок поста 2</a></h3>
+            <p>Краткое описание поста 2. Обзор на интересную тему, которая заслуживает внимания...</p>
+            <p class="date">Дата: 20 августа 2024</p>
+        </div>
+
+        <div class="post-card">
+            <h3><a href="#">Заголовок поста 3</a></h3>
+            <p>Краткое описание поста 3. В этом посте обсуждаются основные моменты...</p>
+            <p class="date">Дата: 18 августа 2024</p>
+        </div>
+
+    </div>
+    
+    <aside class="sidebar">
+        <h2>Категории</h2>
+        <ul>
+            <li><a href="#">Категория 1</a></li>
+            <li><a href="#">Категория 2</a></li>
+            <li><a href="#">Категория 3</a></li>
+            <li><a href="#">Категория 4</a></li>
+            <li><a href="#">Категория 5</a></li>
+        </ul>
+    </aside>
+</div>
+
+</body>
+</html>

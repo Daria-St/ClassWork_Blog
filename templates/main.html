@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="main-content">
+        <div class="post-card">
+            <h2>Главная страница</h2>
+            {{ post.title }}
+            <p>{{ post.text }}</p>
+            <p class="date">{{ post.created_data }}</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

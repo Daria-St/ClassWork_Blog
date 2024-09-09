@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заголовок поста | Блог Платформа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .nav-menu li {
+            margin-left: 20px;
+        }
+        .nav-menu li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .nav-menu li a:hover {
+            text-decoration: underline;
+        }
+        h1, h2, h3, h4 {
+            margin: 0 0 10px;
+        }
+        p {
+            margin: 0 0 15px;
+            line-height: 1.6;
+        }
+
+        .container-post {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        
+        .post-content {
+            margin-bottom: 40px;
+        }
+        .post-date {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .comments-section {
+            margin-top: 40px;
+        }
+        .comments-section h4 {
+            margin-bottom: 20px;
+        }
+        .comment {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+        }
+        .comment-date {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .comment-text {
+            margin: 0;
+        }
+        .comment-form {
+            margin-top: 40px;
+        }
+        .comment-form h4 {
+            margin-bottom: 20px;
+        }
+        .comment-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .comment-form input, 
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .comment-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .comment-form button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .comment-form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="header-logo">Блог Платформа</div>
+        <ul class="nav-menu">
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">О нас</a></li>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Контакты</a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="container-post">
+    <article class="post-content">
+        <h1>Заголовок поста</h1>
+        <p class="post-date">Дата: 22 августа 2024</p>
+        <p>Полный текст поста. Здесь может быть любая информация: текст, изображения, цитаты и многое другое.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </article>
+
+    <!-- Блок комментариев -->
+    <div class="comments-section">
+        <h4>Комментарии (3)</h4>
+        
+        <div class="comment">
+            <p class="comment-author">Иван Иванов</p>
+            <p class="comment-date">22 августа 2024</p>
+            <p class="comment-text">Отличный пост! Очень понравилось.</p>
+        </div>
+        
+        <div class="comment">
+            <p class="comment-author">Мария Петрова</p>
+            <p class="comment-date">21 августа 2024</p>
+            <p class="comment-text">Спасибо за информацию, было полезно узнать некоторые вещи.</p>
+        </div>
+        
+        <div class="comment">
+            <p class="comment-author">Алексей Сидоров</p>
+            <p class="comment-date">20 августа 2024</p>
+            <p class="comment-text">Интересный взгляд на тему, но хотелось бы больше деталей.</p>
+        </div>
+    </div>
+
+    <!-- Форма добавления комментария -->
+    <div class="comment-form">
+        <h4>Добавить комментарий</h4>
+        <form action="#" method="post">
+            <label for="name">Ваше имя</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="comment">Комментарий</label>
+            <textarea id="comment" name="comment" required></textarea>
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

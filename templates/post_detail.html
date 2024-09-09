@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-post">
+    <article class="post-content">
+        <h1>{{ post.title }}</h1>
+        <p class="post-date">Дата: {{ post.created_data }}</p>
+        <p>{{ post.text }}</p>
+        </article>
+
+    <!-- Блок комментариев -->
+    <div class="comments-section">
+        <h4>Комментарии ({{comments|length}})</h4>
+        {% for comment in comments %}
+        <div class="comment">
+            <p class="comment-author">Анонимус</p>
+<!--            <p class="comment-date">{{ post.created_data }}</p>-->
+            <p class="comment-text">{{ comment.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Форма добавления комментария -->
+    <div class="comment-form">
+        <h4>Добавить комментарий</h4>
+        <form action="{% url 'post_detail' post.id %}" method="post">
+            {% csrf_token %}
+
+            <label for="{{ comment_add_form.text.id_for_label }}">Комментарий</label><br>
+            {{ comment_add_form.text }}
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

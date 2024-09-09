@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="main-content">
+        <div class="post-card">
+            <h2>Добавление записи</h2>
+
+            <form action="{% url 'post_add' %}" method="post">  <!--action можно оставлять пустым, но лучше указывать на
+        какой адрес хотим отправить, вставили "name" из core/urls -->
+                {% csrf_token %} <!-- секретный токен -->
+                <label for="{{ post_add_form.title.id_for_label }}">Заголовок</label><br>
+                {{ post_add_form.title }}
+                {{ post_add_form.title.errors }}<br>
+
+                <label for="{{ post_add_form.text.id_for_label }}">Текст</label><br>
+                {{ post_add_form.text }}
+                {{ post_add_form.text.errors }}<br>
+
+                <label for="{{ post_add_form.category.id_for_label }}">Категория</label><br>
+                {{ post_add_form.category }}
+                {{ post_add_form.category.errors }}<br>
+
+                {{ post_add_form.non_field_errors }}
+
+
+                <input type="submit" value="Добавить">
+
+                <br>{{error}}
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
