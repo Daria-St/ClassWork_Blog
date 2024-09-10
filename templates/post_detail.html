@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
@@ -8,7 +7,7 @@
         <h1>{{ post.title }}</h1>
         <p class="post-date">Дата: {{ post.created_data }}</p>
         <p>{{ post.text }}</p>
-        </article>
+    </article>
 
     <!-- Блок комментариев -->
     <div class="comments-section">
@@ -16,7 +15,7 @@
         {% for comment in comments %}
         <div class="comment">
             <p class="comment-author">Анонимус</p>
-<!--            <p class="comment-date">{{ post.created_data }}</p>-->
+            <!--            <p class="comment-date">{{ post.created_data }}</p>-->
             <p class="comment-text">{{ comment.text }}</p>
         </div>
         {% endfor %}
@@ -27,9 +26,9 @@
         <h4>Добавить комментарий</h4>
         <form action="{% url 'post_detail' post.id %}" method="post">
             {% csrf_token %}
-
-            <label for="{{ comment_add_form.text.id_for_label }}">Комментарий</label><br>
-            {{ comment_add_form.text }}
+            <div class="mb-3">
+                {{ comment_add_form.text }}
+            </div>
 
             <button type="submit">Отправить</button>
         </form>

@@ -6,12 +6,13 @@ from django.core.exceptions import ValidationError
 class PostAddForm(forms.Form):
     #каждое свойство класса - это поле, которое дб в формочке
     # внутри формы можно прописать названия классов.
-    title = forms.CharField(max_length=500)
+    title = forms.CharField(max_length=500, widget=forms.TextInput(attrs={"class": "form-control"}))
     text = forms.CharField(widget=forms.Textarea)
     category = forms.ModelChoiceField(queryset=PostCategory.objects.all())
+    # title.widget.attrs.update({"class": "form-control"})
 
     # def clean_title(self):
-    #     title = self.cleaned_data['title']
+    #     title = self.cleaned_data['title'] # если нужна валидация к конкретному полю, не зависимо от других
     #     if Post.objects.filter(title=title):
     #         raise ValidationError('Такой заголовок уже есть в этой категории!')
     #     return title
@@ -26,16 +27,25 @@ class PostAddForm(forms.Form):
 
         return cleaned_data
 
-    def clean_text(self):
+    def clean_text(self): #
         text = self.cleaned_data['text'].lower()
         if 'дурак' in text:
             raise ValidationError('Нецензурное выражение')
         return text
 
 class PostAddModelForm(forms.ModelForm):
+
+    # title = forms.CharField(max_length=500, widget=forms.TextInput(attrs={"class": "form-control"}))
+    # text = forms.CharField(widget=forms.Textarea(attrs={"class": "form-control"}))
+    # category = forms.ModelChoiceField(queryset=PostCategory.objects.all())
     class Meta:
         model = Post
         fields = ['title', 'text', 'category']
+
+    def __init__(self, *args, **kwargs):
+        super(PostAddModelForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
     def clean(self):
         cleaned_data = super().clean()
@@ -56,9 +66,21 @@ class PostAddModelForm(forms.ModelForm):
 
 
 class CommentAddForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(CommentAddForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
     text = forms.CharField(max_length=1000, label='Текст') # label работает, только если в html не прописан
 
 class FeedbackAddForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(FeedbackAddForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
     name = forms.CharField()
     text = forms.CharField(widget=forms.Textarea)
 

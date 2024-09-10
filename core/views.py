@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Post, PostCategory, PostComment, Feedback
 from .forms import PostAddForm, CommentAddForm, FeedbackAddForm, PostAddModelForm
 
+
 def main(request):
 
     # Для вывода информации о записи ее надо сначала достать из бд с помощью орм (предварительно импортировали Post)
@@ -43,6 +44,7 @@ def posts(request):
         'active_category': active_category
     }
     return render(request, 'posts.html', context)
+
 
 def post_detail(request, post_id):
     comment_add_form = CommentAddForm() #формочка рендерится в этой фьюхе, а обрабатывается в comments_add

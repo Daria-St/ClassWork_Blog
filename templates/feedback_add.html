@@ -3,19 +3,22 @@
 
 
 <div class="container">
-    <div class="main-content">
+    <div class="col-md-6">
         <div class="post-card">
             <h2>Обратная связь</h2>
 
             <form action="{% url 'feedback_add' %}" method="post">
                 {% csrf_token %}
-                <label for="{{ feedback_add_form.name.id_for_label }}">Имя</label><br>
-                {{ feedback_add_form.name }}
-                {{ feedback_add_form.name.errors }}<br>
-
-                <label for="{{ feedback_add_form.text.id_for_label }}">Текст отзыва</label><br>
-                {{ feedback_add_form.text }}
-                {{ feedback_add_form.text.errors }}<br>
+                <div class="mb-3">
+                    <label for="{{ feedback_add_form.name.id_for_label }}">Имя</label><br>
+                    {{ feedback_add_form.name }}
+                    {{ feedback_add_form.name.errors }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ feedback_add_form.text.id_for_label }}">Текст отзыва</label><br>
+                    {{ feedback_add_form.text }}
+                    {{ feedback_add_form.text.errors }}
+                </div>
 
                 <input type="submit" value="Добавить">
 
