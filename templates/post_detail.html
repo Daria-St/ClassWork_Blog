@@ -2,37 +2,37 @@
 
 {% block content %}
 
-<div class="container-post">
-    <article class="post-content">
-        <h1>{{ post.title }}</h1>
-        <p class="post-date">Дата: {{ post.created_data }}</p>
-        <p>{{ post.text }}</p>
-    </article>
 
-    <!-- Блок комментариев -->
-    <div class="comments-section">
-        <h4>Комментарии ({{comments|length}})</h4>
-        {% for comment in comments %}
-        <div class="comment">
-            <p class="comment-author">Анонимус</p>
-            <!--            <p class="comment-date">{{ post.created_data }}</p>-->
-            <p class="comment-text">{{ comment.text }}</p>
-        </div>
-        {% endfor %}
+<article class="post-content">
+    <h1>{{ post.title }}</h1>
+    <p class="post-date">Дата: {{ post.created_data }}</p>
+    <p>{{ post.text }}</p>
+</article>
+
+<!-- Блок комментариев -->
+<div class="comments-section">
+    <h4>Комментарии ({{comments|length}})</h4>
+    {% for comment in comments %}
+    <div class="comment">
+        <p class="comment-author">Анонимус</p>
+        <!--            <p class="comment-date">{{ post.created_data }}</p>-->
+        <p class="comment-text">{{ comment.text }}</p>
     </div>
-
-    <!-- Форма добавления комментария -->
-    <div class="comment-form">
-        <h4>Добавить комментарий</h4>
-        <form action="{% url 'post_detail' post.id %}" method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                {{ comment_add_form.text }}
-            </div>
-
-            <button type="submit">Отправить</button>
-        </form>
-    </div>
+    {% endfor %}
 </div>
+
+<!-- Форма добавления комментария -->
+<div class="comment-form">
+    <h4>Добавить комментарий</h4>
+    <form action="{% url 'post_detail' post.id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ comment_add_form.text }}
+        </div>
+
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+
 
 {% endblock %}
