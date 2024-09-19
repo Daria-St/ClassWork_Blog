@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post, PostCategory, PostComment, Feedback
 from .forms import PostAddForm, CommentAddForm, FeedbackAddForm, PostAddModelForm
@@ -57,7 +58,9 @@ def post_detail(request, post_id):
         comment_add_form = CommentAddForm(request.POST)
         if comment_add_form.is_valid():
             data = comment_add_form.cleaned_data
-        PostComment.objects.create(post=post, text=data['text'])
+
+        profile = request.user.profile
+        PostComment.objects.create(post=post, text=data['text'], profile=profile)
         return redirect('post_detail', post.id)
 
     context = {
@@ -68,7 +71,7 @@ def post_detail(request, post_id):
 
     return render(request, 'post_detail.html', context)
 
-
+@login_required
 def post_add(request):
 
     categories = PostCategory.objects.all()
@@ -81,10 +84,13 @@ def post_add(request):
         if post_add_form.is_valid(): #рассматриваем успешный сценарий
             data = post_add_form.cleaned_data #достали словарик
             print(data)
+
+            profile = request.user.profile # ДОБАВИЛИ СТРОЧКУ чтобы привязать пост к конкретному профайлу в create ниже
             #Добавляем объект в базу
             Post.objects.create(title=data['title'],
                                 text=data['text'],
-                                category=data['category'])
+                                category=data['category'],
+                                profile=profile) # вот тут привязали профайл
             return redirect('posts')
 
     context = {

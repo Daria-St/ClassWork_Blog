@@ -11,7 +11,8 @@
                 <div class="post-card">
                     <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
                     <p>{{ post.text }}</p>
-                    <p class="date">{{ post.created_data }}</p>
+                    <p>Автор: {{ post.profile }}</p>
+                    <p class="date">Дата: {{ post.created_data }}</p>
                 </div>
                 {% endfor %}
 

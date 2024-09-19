@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import Profile
 
 class PostCategory(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')
@@ -25,6 +26,10 @@ class Post(models.Model): # создааем таблицу и наследуе�
     # показали что хотим связаться с таблицей и передаем название этой таблицы
     # после добавления изменений нужно ввести команды мигрейшн и мигрейт и в admin.py регаем новый класс
 
+    profile = models.ForeignKey(Profile,
+                                related_name='profile_posts',
+                                on_delete=models.CASCADE)
+
 
     class Meta: # чтобы в админке красиво отображалось название таблицы, это интерфейс
         verbose_name = 'Запись'
@@ -39,6 +44,9 @@ class PostComment(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
                              related_name='post_comments')
+    profile = models.ForeignKey(Profile,
+                                related_name='profile_comments',
+                                on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Комментарий'
