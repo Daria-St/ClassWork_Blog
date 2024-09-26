@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout, get_user_model, authenticate
 from .forms import LoginForm, RegisterForm
@@ -47,3 +48,13 @@ def register(request):
             return redirect('posts')
 
     return render(request, 'user/register.html', {'form':form})
+
+
+@login_required
+def home(request):
+    profile = request.user.profile
+
+    posts = profile.profile_posts.all() # достали посты пользователя , аналог этой строчки: post = Post.objects.filter(profile=profile)
+
+    return render(request, 'user/home.html', {'posts': posts})
+

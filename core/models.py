@@ -66,3 +66,31 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name
+
+# Таблица, в которой на кого подписываются и кто подписывается
+class Subscription(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE,
+                                related_name='profile_followers')
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,
+                               related_name='profile_following')
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return self.profile.user.username
+
+
+class PostLike(models.Model):
+    # постлайк должен быть связан с каким-то постом
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile_likes')
+    created_dare = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Лайк поста'
+        verbose_name_plural = 'Лайки постов'
+
+    def __str__(self):
+        return f"{self.post} - {self.profile.user}"

@@ -33,6 +33,19 @@
                     {% endif %}
                     {% endfor %}
                 </ul>
+
+                <h2>Подписки</h2>
+                <ul class="list-group">
+                    {% for subscribe in subscriptions %}
+                    {% if category.id == active_category.id %}
+                    <b>
+                        <li class="list-group-item active list-group-item-dark"><a href="?author={{ subscribe.author.id }}">{{ subscribe.author.user.username}}</a></li>
+                    </b>
+                    {% else %}
+                    <li class="list-group-item"><a href="?author={{ subscribe.author.id }}">{{ subscribe.author.user.username }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
             </aside>
         </div>
     </div>

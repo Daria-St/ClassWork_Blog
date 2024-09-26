@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import main, posts, post_detail, post_add, feedback_add, feedback_s
+from .views import main, posts, post_detail, post_add, feedback_add, feedback_s, subscribe, unsubscribe, post_like, post_dislike
 
 # создали новый список урл адресов(скопировали из blog/urls)
 urlpatterns = [
@@ -10,7 +10,17 @@ urlpatterns = [
     path('posts/<int:post_id>', post_detail, name='post_detail'),
     path('posts/add', post_add, name='post_add'),
     path('posts/feedback_add', feedback_add, name='feedback_add'),
-    path('posts/feedback_s', feedback_s, name='feedback_s')
+    path('posts/feedback_s', feedback_s, name='feedback_s'),
+
+
+    path('subscribe/<int:profile_id>', subscribe, name='subscribe'),
+    path('unsubscribe/<int:profile_id>', unsubscribe, name='unsubscribe'),
+
+
+    path('like/<int:post_id>', post_like, name='post_like'),
+    path('dislike/<int:post_id>', post_dislike, name='post_dislike'),
+
+
     # path('posts/<int:post_id>/comment/add', comment_add, name='comment_add'),
     # path('posts/add_submit', post_add_submit, name='post_add_submit'), # name - прозвище урл адреса, к которому можно
     # будет обращаться из шаблона

@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Post, PostCategory, PostComment, Feedback
+from .models import Post, PostCategory, PostComment, Feedback, PostLike
 from .forms import PostAddForm, CommentAddForm, FeedbackAddForm, PostAddModelForm
+from .models import Profile, Subscription
 
 
 def main(request):
@@ -30,28 +31,57 @@ def posts(request):
     # прилетаю урл запросы, засовывают в гет, чтобы пользователям запроса было удобно парсить
     active_category = None
 
+    author = request.GET.get('author')
+    active_author = None
+
     if category:
         #достаем посты и фальтруем если получили категорию
         posts = posts.filter(category__id=category) # фильтрация по полю category (могли вместо id написать
         # title) вместо category = PostCategory(id=category)
         active_category = PostCategory.objects.get(id=category) # если у нас есть какая-то категория - мы ее достаем
         # как объект
+
+    if author:
+        posts = posts.filter(profile__id=author)
+        active_author = Profile.objects.get(id=author)
+
     categories = PostCategory.objects.all() # достали категории, но их надо добавить контакст, дополняем словарь
     # новыми объектами - создали новую переменную и поместили туда словарь, ее используем теперь в рендере
+
+    subscriptions = None
+    if request.user.is_authenticated:
+        profile = request.user.profile
+        subscriptions = Subscription.objects.filter(profile=profile)
 
     context = {
         "posts": posts,
         'categories': categories,
-        'active_category': active_category
+        'active_category': active_category,
+        'subscriptions': subscriptions
     }
     return render(request, 'posts.html', context)
 
 
 def post_detail(request, post_id):
+
+    #создадим пустой словарик контекста, чтобы внцтри вьюхи можно было пополнять
+    context = {}
+
     comment_add_form = CommentAddForm() #формочка рендерится в этой фьюхе, а обрабатывается в comments_add
     post = Post.objects.get(id=post_id)
     #первый вариант
     comments = PostComment.objects.filter(post=post)
+
+    if request.user.is_authenticated: # добавляем проверку подписки на автора
+        #проверка пользователя на подписку
+
+        is_subscribed = Subscription.objects.filter(profile=request.user.profile,
+                                                    author=post.profile)
+        #проверка пользователя на лайк
+        is_liked = PostLike.objects.filter(profile=request.user.profile,
+                                                    post=post)
+        context.update({'is_subscribed': is_subscribed, 'is_liked':is_liked})
+
 
     if request.method == 'POST': # ПОД ИФ ПЕРЕНЕСЛИ ВСЕ ИЗ Comment_ADD и заменили в html ссылку на post_detail.html
         post = Post.objects.get(id=post_id)
@@ -63,11 +93,11 @@ def post_detail(request, post_id):
         PostComment.objects.create(post=post, text=data['text'], profile=profile)
         return redirect('post_detail', post.id)
 
-    context = {
+    context.update({
         "post": post,
         'comments': comments,
         'comment_add_form': comment_add_form
-    }
+    })
 
     return render(request, 'post_detail.html', context)
 
@@ -133,7 +163,51 @@ def feedback_s(request):
     return render(request, 'feedback_s.html')
 
 
+@login_required
+def subscribe(request, profile_id):
+
+    redirect_url = request.GET.get('next')
+
+    author = Profile.objects.get(id=profile_id)
+    profile = request.user.profile
+
+    Subscription.objects.get_or_create(author=author, profile=profile)
+
+    return redirect(redirect_url)
+
+@login_required
+
+# доделать вьюху с редиректом
+def unsubscribe(request, profile_id):
+    redirect_url = request.GET.get('next')
+
+    author = Profile.objects.get(id=profile_id)
+    profile = request.user.profile
+
+    Subscription.objects.filter(author=author, profile=profile).delete()
+
+    return redirect(redirect_url)
 
 
+@login_required
+def post_like(request, post_id):
 
+    redirect_url = request.GET.get('next')
 
+    post = Post.objects.get(id=post_id) # достаем пост на основе пост-айди
+    profile = request.user.profile
+
+    PostLike.objects.get_or_create(post=post, profile=profile) # get_or_create - не позволит создавать много лайков
+
+    return redirect(redirect_url)
+
+@login_required
+def post_dislike(request, post_id):
+
+    redirect_url = request.GET.get('next')
+    post = Post.objects.get(id=post_id) # достаем пост на основе пост-айди
+    profile = request.user.profile
+
+    PostLike.objects.filter(post=post, profile=profile).delete() # get_or_create - не позволит создавать много лайков
+
+    return redirect(redirect_url)
