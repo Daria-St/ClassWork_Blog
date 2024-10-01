@@ -50,10 +50,12 @@ class PostAddModelForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         title = cleaned_data.get("title")
-        category = cleaned_data.get("category")
 
-        if Post.objects.filter(title=title, category=category):
-            raise ValidationError('Такой заголовок уже есть в этой категории!')
+        if self.instance.title != title:
+            category = cleaned_data.get("category")
+
+            if Post.objects.filter(title=title, category=category):
+                raise ValidationError('Такой заголовок уже есть в этой категории!')
 
         return cleaned_data
 

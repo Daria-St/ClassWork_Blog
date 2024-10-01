@@ -9,7 +9,10 @@
         <h3>Ваши посты</h3>
 
         {% for post in posts %}
-        <p><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></p>
+        <p>
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+            <a href="{% url 'post_edit' post.id %}">Редактировать</a>
+        </p>
         {% endfor %}
 
 

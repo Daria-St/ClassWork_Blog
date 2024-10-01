@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import Http404
 from django.shortcuts import render, redirect
 from .models import Post, PostCategory, PostComment, Feedback, PostLike
 from .forms import PostAddForm, CommentAddForm, FeedbackAddForm, PostAddModelForm
@@ -23,16 +25,22 @@ def posts(request):
 
 
     #Функция должна выводить все записи, которые есть по порядку
-    posts = Post.objects.all() # тут получили все записи
+    posts = Post.objects.all() # тут получили все записи, сортировка "всех постов"
 
     # В переменной posts место all пишем filter, достаем параметр, а затем достаем посты и фильтруем
     # достаем параметр (категорию)
     category = request.GET.get('category')  # GET - обращение к конкретному объекту GET (это свойство) // когда
     # прилетаю урл запросы, засовывают в гет, чтобы пользователям запроса было удобно парсить
-    active_category = None
-
     author = request.GET.get('author')
+    order_by = request.GET.get('order_by')
+    page = request.GET.get('page', 1) # по умолчанию возвращается 1ая страница с постами
+
+
+    active_category = None
     active_author = None
+
+
+
 
     if category:
         #достаем посты и фальтруем если получили категорию
@@ -40,10 +48,17 @@ def posts(request):
         # title) вместо category = PostCategory(id=category)
         active_category = PostCategory.objects.get(id=category) # если у нас есть какая-то категория - мы ее достаем
         # как объект
-
     if author:
         posts = posts.filter(profile__id=author)
         active_author = Profile.objects.get(id=author)
+    if order_by:
+        posts = posts.order_by(order_by)
+
+    #логика для пагинации (сколько постов на стринице, несколько страниц и тд)
+    # применили метод page, передав туда page - номер страницы
+    p = Paginator(posts, 5)
+    page_objects = p.page(page)
+
 
     categories = PostCategory.objects.all() # достали категории, но их надо добавить контакст, дополняем словарь
     # новыми объектами - создали новую переменную и поместили туда словарь, ее используем теперь в рендере
@@ -57,7 +72,9 @@ def posts(request):
         "posts": posts,
         'categories': categories,
         'active_category': active_category,
-        'subscriptions': subscriptions
+        'subscriptions': subscriptions,
+        'active_author': active_author,
+        'page_objects': page_objects
     }
     return render(request, 'posts.html', context)
 
@@ -112,15 +129,28 @@ def post_add(request):
         # или нет. Как проверяется валидность:
 
         if post_add_form.is_valid(): #рассматриваем успешный сценарий
-            data = post_add_form.cleaned_data #достали словарик
-            print(data)
+            # data = post_add_form.cleaned_data #достали словарик
+            # print(data)
+            ## ДАТУ ТОЖЕ МОЖНО НЕ ДОСТАВАТЬ
 
-            profile = request.user.profile # ДОБАВИЛИ СТРОЧКУ чтобы привязать пост к конкретному профайлу в create ниже
-            #Добавляем объект в базу
-            Post.objects.create(title=data['title'],
-                                text=data['text'],
-                                category=data['category'],
-                                profile=profile) # вот тут привязали профайл
+
+
+            #ЭТО ВСЕ ВМЕСТО Post.objects.create (ИЗБАВЛЯЕТ ОТ РУЧНОГО СОЗДАНИЯ ОБЪЕКТА, ЭТО ПОЛЕЗНО ДЛЯ РЕДАТИРОВАНИЯ) Post.objects.create ЗАКОММЕНТИЛИ
+
+            #создаем объект, но пока не сохраняем в базу. СОХРАНЯЕМ ФОРМУ = СОХРАНЯЕМ ОБЪЕКТ В БАЗУ
+            post = post_add_form.save(commit = False)
+            #достали профиль
+            profile = request.user.profile # ДОБАВИЛИ СТРОЧКУ чтобы привязать пост к конкретному профайлу в create ниж
+            #привязали профиль к посту и сохранили его
+            post.profile = profile
+            post.save()
+
+
+            # #Добавляем объект в базу
+            # Post.objects.create(title=data['title'],
+            #                     text=data['text'],
+            #                     category=data['category'],
+            #                     profile=profile) # вот тут привязали профайл
             return redirect('posts')
 
     context = {
@@ -129,6 +159,28 @@ def post_add(request):
     }
 
     return render(request, 'post_add.html', context)
+
+
+
+# РЕДАКТИРОВАНИЕ ПОСТОВ
+@login_required
+def post_edit(request, post_id):
+
+    post = Post.objects.get(id=post_id) # получили объект из базы
+
+    if post.profile != request.user.profile:
+        raise Http404
+
+    form = PostAddModelForm(instance=post) # создали форму как обычно, но получили инстанс
+
+    if request.method == 'POST':
+        form = PostAddModelForm(request.POST, instance=post) # instance - привязка к старой записи
+        if form.is_valid():
+            # обновление объекта
+            form.save()
+            return redirect('post_detail', post.id)
+
+    return render(request, 'post_edit.html', {"post_add_form":form}) # передали эту форму в контексте
 
 
 # def comment_add(request, post_id):
