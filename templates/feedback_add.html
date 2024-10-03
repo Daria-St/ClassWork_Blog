@@ -10,14 +10,14 @@
             <form action="{% url 'feedback_add' %}" method="post">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="{{ feedback_add_form.name.id_for_label }}">Имя</label><br>
-                    {{ feedback_add_form.name }}
-                    {{ feedback_add_form.name.errors }}
+                    <label for="{{ form.name.id_for_label }}">Имя</label><br>
+                    {{ form.name }}
+                    {{ form.name.errors }}
                 </div>
                 <div class="mb-3">
-                    <label for="{{ feedback_add_form.text.id_for_label }}">Текст отзыва</label><br>
-                    {{ feedback_add_form.text }}
-                    {{ feedback_add_form.text.errors }}
+                    <label for="{{ form.text.id_for_label }}">Текст отзыва</label><br>
+                    {{ form.text }}
+                    {{ form.text.errors }}
                 </div>
 
                 <input type="submit" value="Добавить">

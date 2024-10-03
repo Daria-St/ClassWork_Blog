@@ -7,6 +7,10 @@
         <div class="col-md-8">
 
             <h2>Список всех постов</h2>
+            <form class="d-flex mb-4" role="search" action="{% url 'posts_search' %}">
+                <input value="{{ search_text }}" name="text" class="form-control me-2" type="search" placeholder="Найти" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Найти</button>
+            </form>
             {% for post in page_objects.object_list %}
             <div class="post-card">
                 <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>

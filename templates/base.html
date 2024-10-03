@@ -179,6 +179,7 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'posts' %}">Все записи</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'post_add' %}">Добавить запись</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'feedback_add' %}">Обратная связь</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
             {% if request.user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="{% url 'login' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">

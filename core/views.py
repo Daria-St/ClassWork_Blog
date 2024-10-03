@@ -1,7 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q # помогает строить более гибкий sql запрос
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.views import View
+from django.views.generic import TemplateView, CreateView
+
 from .models import Post, PostCategory, PostComment, Feedback, PostLike
 from .forms import PostAddForm, CommentAddForm, FeedbackAddForm, PostAddModelForm
 from .models import Profile, Subscription
@@ -25,7 +29,8 @@ def posts(request):
 
 
     #Функция должна выводить все записи, которые есть по порядку
-    posts = Post.objects.all() # тут получили все записи, сортировка "всех постов"
+    # posts = Post.objects.all() # тут получили все записи, сортировка "всех постов"
+    posts = Post.objects.prefetch_related('profile__user').all() # заменили верхнюю строчку для запросов
 
     # В переменной posts место all пишем filter, достаем параметр, а затем достаем посты и фильтруем
     # достаем параметр (категорию)
@@ -77,6 +82,34 @@ def posts(request):
         'page_objects': page_objects
     }
     return render(request, 'posts.html', context)
+
+
+def posts_search(request):
+    '''Представление для поиска статей'''
+    #как достать гет параметр
+    posts = Post.objects.all()
+
+    #фильтрация по слову
+    text = request.GET.get('text') # загетили параметр текст (который предварительно записали в html в name)
+    if text:
+        posts = posts.filter(Q(title__icontains=text)|Q(text__icontains=text))
+
+    #пагинация
+    page = request.GET.get('page', 1)
+    p = Paginator(posts, 5)
+    page_objects = p.page(page)
+
+    categories = PostCategory.objects.all()
+
+    context = {
+        'categories': categories,
+        'page_objects': page_objects,
+        'search_text': text
+    }
+
+    return render(request, 'posts.html', context)
+
+
 
 
 def post_detail(request, post_id):
@@ -195,21 +228,30 @@ def post_edit(request, post_id):
 
 
 def feedback_add(request):
-    feedback_add_form = FeedbackAddForm()
+    form = FeedbackAddForm()
     if request.method == "POST":
-        feedback_add_form = FeedbackAddForm(request.POST)
+        form = FeedbackAddForm(request.POST)
 
-        if feedback_add_form.is_valid():
-            data = feedback_add_form.cleaned_data
-            print(data)
-            Feedback.objects.create(name=data['name'], text=data['text'])
+        if form.is_valid():
+            form.save()
+            # data = feedback_add_form.cleaned_data
+            # print(data)
+            # Feedback.objects.create(name=data['name'], text=data['text'])
             return redirect('feedback_s')
 
     context = {
-        'feedback_add_form' : feedback_add_form
+        'form' : form
     }
 
     return render(request, 'feedback_add.html', context)
+
+# ПЕРЕПИСАЛИ ФУНКЦИЮ feedback_add в 4 строчки КЛАССОМ
+class FeedbackView(CreateView):
+    form_class = FeedbackAddForm
+    template_name = 'feedback_add.html'
+    success_url = '/posts/feedback_s'
+
+
 
 def feedback_s(request):
     return render(request, 'feedback_s.html')
@@ -263,3 +305,16 @@ def post_dislike(request, post_id):
     PostLike.objects.filter(post=post, profile=profile).delete() # get_or_create - не позволит создавать много лайков
 
     return redirect(redirect_url)
+
+def contacts(request):
+    return render(request, 'contacts.html')
+
+#тоже самое с помощью классов (класс предназначен для типичной задачи)
+class ContactView(View): # если статичных страниц много - можно пользоваться встроенными классами
+
+    def get(self, request):
+        return render(request, 'contacts.html')
+
+# прокаченный вариант
+class SuperContactView(TemplateView): # копируем, меняем html для других страниц
+    template_name = 'contacts.html'

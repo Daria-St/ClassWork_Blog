@@ -1,6 +1,6 @@
 # Сделать форму для обработки добавления поста
 from django import forms
-from .models import PostCategory, Post
+from .models import PostCategory, Post, Feedback
 from django.core.exceptions import ValidationError
 
 class PostAddForm(forms.Form):
@@ -76,15 +76,18 @@ class CommentAddForm(forms.Form):
 
     text = forms.CharField(max_length=1000, label='Текст') # label работает, только если в html не прописан
 
-class FeedbackAddForm(forms.Form):
+class FeedbackAddForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'text']
 
     def __init__(self, *args, **kwargs):
         super(FeedbackAddForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    name = forms.CharField()
-    text = forms.CharField(widget=forms.Textarea)
+    # name = forms.CharField()
+    # text = forms.CharField(widget=forms.Textarea)
 
     def clean_name(self):
         name = self.cleaned_data['name'].split()
