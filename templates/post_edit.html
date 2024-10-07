@@ -7,25 +7,25 @@
         <div class="post-card">
             <h2>Добавление записи</h2>
 
-            <form action="{% url 'post_edit' post_add_form.instance.id %}" method="post">
+            <form action="{% url 'post_edit' form.instance.id %}" method="post">
                 {% csrf_token %} <!-- секретный токен -->
                 <div class="mb-3">
-                    <label for="{{ post_add_form.title.id_for_label }}">Заголовок</label><br>
-                    {{ post_add_form.title }}
-                    {{ post_add_form.title.errors }}
+                    <label for="{{ form.title.id_for_label }}">Заголовок</label><br>
+                    {{ form.title }}
+                    {{ form.title.errors }}
                 </div>
                 <div class="mb-3">
-                    <label for="{{ post_add_form.text.id_for_label }}">Текст</label><br>
-                    {{ post_add_form.text }}
-                    {{ post_add_form.text.errors }}
+                    <label for="{{ form.text.id_for_label }}">Текст</label><br>
+                    {{ form.text }}
+                    {{ form.text.errors }}
                 </div>
                 <div class="mb-3">
-                    <label for="{{ post_add_form.category.id_for_label }}">Категория</label><br>
-                    {{ post_add_form.category }}
-                    {{ post_add_form.category.errors }}
+                    <label for="{{ form.category.id_for_label }}">Категория</label><br>
+                    {{ form.category }}
+                    {{ form.category.errors }}
                 </div>
 
-                {{ post_add_form.non_field_errors }}
+                {{ form.non_field_errors }}
 
 
                 <input type="submit" value="Сохранить изменения">

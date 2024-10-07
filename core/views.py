@@ -79,7 +79,7 @@ def posts(request):
         'active_category': active_category,
         'subscriptions': subscriptions,
         'active_author': active_author,
-        'page_objects': page_objects
+        'page_obj': page_objects
     }
     return render(request, 'posts.html', context)
 
@@ -103,7 +103,7 @@ def posts_search(request):
 
     context = {
         'categories': categories,
-        'page_objects': page_objects,
+        'page_obj': page_objects,
         'search_text': text
     }
 
@@ -111,7 +111,7 @@ def posts_search(request):
 
 
 
-
+#перепиши этот код в ООП стиле с использованием дженерик вьюс на django(можно написать Chat_GPT)
 def post_detail(request, post_id):
 
     #создадим пустой словарик контекста, чтобы внцтри вьюхи можно было пополнять
@@ -188,7 +188,7 @@ def post_add(request):
 
     context = {
         'categories': categories,
-        'post_add_form': post_add_form
+        'form': post_add_form #ЗАМЕНИЛИ НА form чтобы не сломалось после замены в html (из-за classy_views)
     }
 
     return render(request, 'post_add.html', context)
@@ -213,7 +213,7 @@ def post_edit(request, post_id):
             form.save()
             return redirect('post_detail', post.id)
 
-    return render(request, 'post_edit.html', {"post_add_form":form}) # передали эту форму в контексте
+    return render(request, 'post_edit.html', {"form":form}) # передали эту форму в контексте
 
 
 # def comment_add(request, post_id):
@@ -244,12 +244,6 @@ def feedback_add(request):
     }
 
     return render(request, 'feedback_add.html', context)
-
-# ПЕРЕПИСАЛИ ФУНКЦИЮ feedback_add в 4 строчки КЛАССОМ
-class FeedbackView(CreateView):
-    form_class = FeedbackAddForm
-    template_name = 'feedback_add.html'
-    success_url = '/posts/feedback_s'
 
 
 
@@ -309,12 +303,3 @@ def post_dislike(request, post_id):
 def contacts(request):
     return render(request, 'contacts.html')
 
-#тоже самое с помощью классов (класс предназначен для типичной задачи)
-class ContactView(View): # если статичных страниц много - можно пользоваться встроенными классами
-
-    def get(self, request):
-        return render(request, 'contacts.html')
-
-# прокаченный вариант
-class SuperContactView(TemplateView): # копируем, меняем html для других страниц
-    template_name = 'contacts.html'

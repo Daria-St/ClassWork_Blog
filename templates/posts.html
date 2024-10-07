@@ -11,7 +11,7 @@
                 <input value="{{ search_text }}" name="text" class="form-control me-2" type="search" placeholder="Найти" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Найти</button>
             </form>
-            {% for post in page_objects.object_list %}
+            {% for post in page_obj.object_list %}
             <div class="post-card">
                 <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
                 <p>{{ post.text }}</p>
@@ -22,25 +22,25 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    {% if page_objects.has_previous %}
+                    {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_objects.previous_page_number }}" aria-label="Previous">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_objects.previous_page_number }}">{{ page_objects.previous_page_number }}</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
                     </li>
                     {% endif %}
 
-                    <li class="page-item active"><a class="page-link" href="#">{{ page_objects.number }}</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
 
-                    {% if page_objects.has_next %}
+                    {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_objects.next_page_number }}">{{ page_objects.next_page_number }}</a>
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_objects.next_page_number }}" aria-label="Next">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
