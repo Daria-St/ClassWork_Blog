@@ -9,7 +9,7 @@ $('#likeButton').click(function(e) {
 //    $(this).text('Нажали  лайк');
 //    $('h1').css({'color': 'red'});
 
-    let baseUrl = 'http://127.0.0.1:8000/';
+    let baseUrl = 'http://localhost:8001/';
     $.ajax({
         type: 'GET',
         url: baseUrl + $(this).attr('href'),
@@ -30,7 +30,7 @@ $('#likeButton').click(function(e) {
 
 $('#unlikeButton').click(function(e) {
     e.preventDefault();
-    let baseUrl = 'http://127.0.0.1:8000/';
+    let baseUrl = 'http://localhost:8001/';
     $.ajax({
         type: 'GET',
         url: baseUrl + $(this).attr('href'),
@@ -38,6 +38,39 @@ $('#unlikeButton').click(function(e) {
             $('#likesCount').text(response.likes)
             $('#likeButton').show()
             $('#unlikeButton').hide()
+        }
+    })
+})
+
+//функция, которая отслеживает в js нажатиие на кнопку Добавить
+
+$('#feedbackForm').on('submit',function(e) {
+    e.preventDefault();
+    let baseUrl = 'http://localhost:8001/';
+
+    $.ajax({
+        type: 'POST',
+        url: baseUrl + $(this).attr('action'),
+        data: {
+            name: $('#id_name').val(),
+            text: $('#id_text').val(),
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(response) {
+            $('.post-card').text('Обратная связь отправлена')
+        },
+        error: function(response){
+            const errors = response.responseJSON.errors
+            let err = ''
+
+            for (let field in errors) {
+                for (let error of errors[field]) {
+                    err += '<p>' + error + '</p>'
+                }
             }
+
+            $('.formErrors').html(err)
+
+        }
     })
 })

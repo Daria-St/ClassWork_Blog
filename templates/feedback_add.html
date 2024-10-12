@@ -7,7 +7,8 @@
         <div class="post-card">
             <h2>Обратная связь</h2>
 
-            <form action="{% url 'feedback_add' %}" method="post">
+            <form id="feedbackForm" action="{% url 'api_feedback' %}" method="post">
+                <div class="formErrors"></div>
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="{{ form.name.id_for_label }}">Имя</label><br>

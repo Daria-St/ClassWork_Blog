@@ -2,16 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
-from core.models import Post, PostLike
+from core.forms import FeedbackAddForm
+from core.models import Post, PostLike, PostComment
 
 
 def test(request):
-
     return JsonResponse({"status": "Ok"})
 
-
 def ajax(request):
-
     return JsonResponse({"status": "Ok", 'message': 'request'})
 
 # скопировано из core/views
@@ -34,3 +32,22 @@ def post_dislike(request, post_id):
     likes = PostLike.objects.filter(post=post).count()
 
     return JsonResponse({"status": "Ok", 'likes': likes})
+
+def feedback(request):
+    """ Обработка аякс запроса """
+
+    if request.method == "POST":
+        form = FeedbackAddForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return JsonResponse({})
+        else:
+            return JsonResponse({'errors': form.errors}, status=400)
+
+def post_comments(request, post_id):
+    post = Post.objects.get(id=post_id)
+    comments = list(PostComment.objects.filter(post=post).values())
+
+    return JsonResponse({'comments':comments})
