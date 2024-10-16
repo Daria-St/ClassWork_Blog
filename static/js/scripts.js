@@ -31,6 +31,7 @@ $('#likeButton').click(function(e) {
 $('#unlikeButton').click(function(e) {
     e.preventDefault();
     let baseUrl = 'http://localhost:8001/';
+
     $.ajax({
         type: 'GET',
         url: baseUrl + $(this).attr('href'),

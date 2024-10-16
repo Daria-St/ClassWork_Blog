@@ -48,6 +48,14 @@ def feedback(request):
 
 def post_comments(request, post_id):
     post = Post.objects.get(id=post_id)
-    comments = list(PostComment.objects.filter(post=post).values())
+    comments = PostComment.objects.filter(post=post)
 
-    return JsonResponse({'comments':comments})
+    new_comments = []
+    for comment in comments:
+        new_comments.append({
+            'text': comment.text,
+            'profile': comment.profile.user.username
+        })
+
+
+    return JsonResponse({'comments':new_comments}, safe=False)
