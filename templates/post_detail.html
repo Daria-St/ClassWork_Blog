@@ -49,7 +49,9 @@
     <!-- Форма добавления комментария -->
     <div class="comment-form">
         <h4>Добавить комментарий</h4>
-        <form action="{% url 'post_detail' post.id %}" method="post">
+        <div style="color:red" class="formErrors"></div>
+<!--        <form id="CommentForm" action="{% url 'post_detail' post.id %}" method="post">-->
+        <form id="CommentForm" action="{% url 'comments_add_rest' post.id %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
                 {{ comment_add_form.text }}
