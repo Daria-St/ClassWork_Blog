@@ -30,6 +30,7 @@ urlpatterns = [
     # path('contacts', contacts, name='contacts'),
     # path('contacts', ContactView.as_view(), name='contacts'),
     path('contacts', SuperContactView.as_view(), name='contacts'),
+    path('vue', vue, name='vue'),
 
 
     # path('posts/<int:post_id>/comment/add', comment_add, name='comment_add'),

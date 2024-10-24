@@ -303,3 +303,5 @@ def post_dislike(request, post_id):
 def contacts(request):
     return render(request, 'contacts.html')
 
+def vue(request):
+    return render(request, 'vue.html')
