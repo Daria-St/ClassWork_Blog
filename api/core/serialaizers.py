@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import PostComment, Feedback
+from core.models import PostComment, Feedback, Post
 
 
 class CommentsSerialaizer(serializers.Serializer):
@@ -31,5 +31,12 @@ class FeedbackSerialaizer(serializers.Serializer):
     def create(self, validated_data):
         return Feedback.objects.create(**validated_data)
 
+
+    #модельная форма сериалайзера
+class PostSerialaizer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__' # если хотим загрузить все поля
+        # fields = ['title'] # если хотим загрузить конкретное поле
 
 

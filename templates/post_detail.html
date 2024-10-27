@@ -2,9 +2,10 @@
 {% load static %}
 {% block content %}
 
-<div class="container-post" data-post-id="{{ post.id }}">
+<div class="container-post" data-post-id="{{ post.id }}" id="post">
     <article class="post-content">
         <h1>{{ post.title }}</h1>
+        <h2>[[ message ]]</h2>
         <p class="post-date">Автор: {{ post.profile }}</p>
         <p class="post-date">Дата: {{ post.created_data }}</p>
         {% if user.is_authenticated %}
@@ -36,14 +37,13 @@
 
     <!-- Блок комментариев -->
     <div class="comments-section">
-        <h4>Комментарии ({{comments|length}})</h4>
-<!--        {% for comment in comments %}-->
-<!--        <div class="comment">-->
-<!--            <p class="comment-author">{{ comment.profile }}</p>-->
-<!--            &lt;!&ndash;            <p class="comment-date">{{ post.created_data }}</p>&ndash;&gt;-->
-<!--            <p class="comment-text">{{ comment.text }}</p>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
+        <h4>Комментарии ([[ comments.length ]])</h4>
+
+        <div class="comment" v-for="comment in comments">
+            <p class="comment-author">[[ comment.profile ]]</p>
+            <p class="comment-text">[[ comment.text ]]</p>
+        </div>
+
     </div>
 
     <!-- Форма добавления комментария -->
@@ -66,6 +66,33 @@
 {% endblock %}
 
 {% block extra_js %}
+
+<script>
+    const { createApp } = Vue
+
+    createApp({
+      delimiters: ['[[', ']]'],
+      data() {
+        return {
+          baseUrl: 'http://localhost:8001',
+          message: 'Hello vue!',
+          comments: []
+          }
+        },
+        methods: {
+            getComments(){
+                let post_id = document.getElementById('post').dataset.postId;
+                axios.get(`${this.baseUrl}/api/rest/posts/${post_id}/comments`)
+                .then(response =>{
+                    this.comments = response.data.comments
+                })
+            }
+        },
+        mounted(){
+            this.getComments()
+        }
+    }).mount('#post')
+</script>
 
 <script src="{% static 'js/post_detail.js' %}"></script>
 

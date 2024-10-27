@@ -53,6 +53,6 @@ $('#CommentForm').on('submit',function(e) {
 })
 
 
-$(document).ready(function(){
-    loadComments();
-})
+//$(document).ready(function(){
+//    loadComments();
+//})

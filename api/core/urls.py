@@ -19,6 +19,8 @@ urlpatterns = [
     path('rest/posts/<int:post_id>/comments', comments_list_rest, name='comments_list_rest'),
     path('rest/posts/<int:post_id>/comments/add', comments_add_rest, name='comments_add_rest'),
 
-    path('rest/clicks', clicks, name='clicks')
+    path('rest/clicks', clicks, name='clicks'),
+    path('rest/comments', comments, name='api_rest_comments'),
+    path('rest/posts', posts, name='api_rest_posts')
 
 ]

@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from core.models import PostComment, Post, Feedback
-from .serialaizers import CommentsSerialaizer, FeedbackSerialaizer
+from .serialaizers import CommentsSerialaizer, FeedbackSerialaizer, PostSerialaizer
 
 
 @api_view(['GET'])
@@ -42,3 +42,20 @@ def feedback_rest(request):
 @api_view(['GET'])
 def clicks(request):
     return Response({'clicks': 100})
+
+@api_view(['GET'])
+def comments(request):
+
+    comments = PostComment.objects.all()
+    serialaizer = CommentsSerialaizer(comments, many=True)
+
+    return Response({'comments': serialaizer.data})
+
+
+@api_view(['GET'])
+def posts(request):
+
+    posts = Post.objects.all()
+    serialaizer = PostSerialaizer(posts, many=True)
+
+    return Response({'posts': serialaizer.data})
