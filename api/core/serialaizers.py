@@ -4,7 +4,7 @@ from core.models import PostComment, Feedback, Post
 
 class CommentsSerialaizer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True) # если захотели передать id, read_only=True - поля, которые не участвуют в записи
-    text = serializers.CharField(max_length=100) #CharField - тип поля, кот лежит в ser, max_length - ограничение количества символов
+    text = serializers.CharField(max_length=10) #CharField - тип поля, кот лежит в ser, max_length - ограничение количества символов
     my_field = serializers.SerializerMethodField(read_only=True)
     profile = serializers.SerializerMethodField()
 

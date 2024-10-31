@@ -45,6 +45,18 @@
         <li v-for="post in posts"> [[ post.title ]]</li>
     </ul>
 
+    <h3>Форма добавления отзыва на фильм</h3>
+    <form @submit.prevent="addFilm" action="{% url 'film_add' %}" method="post">
+        {% csrf_token %}
+        <label>Название фильма</label>
+        <p><input v-model="filmForm.title" id="title" name ="title" type="text"></p>
+        <label>Описание фильма</label>
+        <p><input v-model="filmForm.text" id="text" name ="text" type="text"></p>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <h2>[[ filmForm.title ]]</h2>
+
 
 </div>
 
@@ -55,6 +67,10 @@
       delimiters: ['[[', ']]'],
       data() {
         return {
+          filmForm: {
+            title: '',
+            text: ''
+          },
           baseUrl: 'http://localhost:8001',
           message: 'Hello vue!',
           name: 'Илья',
@@ -93,6 +109,16 @@
                 axios.get(`${this.baseUrl}/api/rest/posts`)
                 .then(response =>{
                     this.posts = response.data.posts
+                })
+            },
+
+            addFilm(){
+                const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value
+                const payload = this.filmForm
+                axios.defaults.headers.common['X-CSRFToken'] = csrf_token;
+                axios.post(`${this.baseUrl}/api/rest/film`, payload)
+                .then(response =>{
+                    console.log(response.data.film)
                 })
             }
         }

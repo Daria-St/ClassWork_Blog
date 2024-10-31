@@ -59,3 +59,10 @@ def posts(request):
     serialaizer = PostSerialaizer(posts, many=True)
 
     return Response({'posts': serialaizer.data})
+
+@api_view(['POST'])
+def film_add_rest(request):
+
+    print(request.data)
+
+    return Response({'film':request.data})
