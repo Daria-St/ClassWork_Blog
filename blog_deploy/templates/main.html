@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="col-md-12">
+
+        <h2>Главная страница</h2>
+        <div class="post-card">
+            <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+            <p>{{ post.text }}</p>
+            <p class="date">{{ post.created_data }}</p>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

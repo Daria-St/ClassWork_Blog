@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="col-md-6">
+        <div class="post-card">
+            <h2>Обратная связь</h2>
+
+            <form id="feedbackForm" action="{% url 'api_feedback_rest' %}" method="post">
+                <div class="formErrors"></div>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="{{ form.name.id_for_label }}">Имя</label><br>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.text.id_for_label }}">Текст отзыва</label><br>
+                    {{ form.text }}
+                    {{ form.text.errors }}
+                </div>
+
+                <input type="submit" value="Добавить">
+
+                <br>{{error}}
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="main-content">
+        <div class="post-card">
+            <h2>Добавление записи</h2>
+
+            <form action="{% url 'post_add' %}" method="post">  <!--action можно оставлять пустым, но лучше указывать на
+        какой адрес хотим отправить, вставили "name" из core/urls -->
+                {% csrf_token %} <!-- секретный токен -->
+                <label for="title">Заголовок</label><br>
+                <input id="title" name="title" type="text"><br>
+
+                <label for="text">Текст</label><br>
+                <textarea id="text" name="text"></textarea><br>
+
+                <label for="category">Выберите категорию: </label>
+                <br>
+                <select name="category" id="category">
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.title }}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="submit" value="Добавить">
+
+                <br>{{error}}
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

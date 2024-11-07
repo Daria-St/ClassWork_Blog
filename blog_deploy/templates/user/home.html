@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container">
+    <div class="col-md-6">
+
+        <h1>Личный кабинет</h1>
+        <h3>Ваши посты</h3>
+
+        {% for post in posts %}
+        <p>
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+            <a href="{% url 'post_edit' post.id %}">Редактировать</a>
+        </p>
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+{% endblock %}
