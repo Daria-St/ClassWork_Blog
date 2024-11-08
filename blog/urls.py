@@ -19,6 +19,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from django.contrib.staticfiles import views
+from django.urls import re_path
+
 # from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
@@ -27,6 +30,15 @@ urlpatterns = [
     path("users/", include("user.urls")),
     path("api/", include("api.core.urls")),
 
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+]
+
+# + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
+if settings.DEBUG:
+    urlpatterns += [
+        re_path(r"^static/(?P<path>.*)$", views.serve),
+    ]
+
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # + debug_toolbar_urls()
